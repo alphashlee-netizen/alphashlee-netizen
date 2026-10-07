@@ -1,1 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Redirecting...</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            background: #1a1a2e;
+            color: #eee;
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        .box { padding: 20px; }
+        a { color: #00e5ff; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h2 id="status">앱으로 돌아가는 중...</h2>
+        <p id="fallback" style="display:none;">
+            자동으로 안 열리면 <a id="link" href="#">여기</a>를 누르세요.
+        </p>
+    </div>
+    <script>
+        const params = new URLSearchParams(location.search);
+        const code = params.get('code');
 
+        if (!code) {
+            document.getElementById('status').textContent = '코드가 없습니다';
+        } else {
+            const url = 'myapp://callback?code=' + encodeURIComponent(code);
+            document.getElementById('link').href = url;
+            location.href = url;
+            setTimeout(() => {
+                document.getElementById('fallback').style.display = 'block';
+                document.getElementById('status').textContent = '앱이 안 열렸어요';
+            }, 1500);
+        }
+    </script>
+</body>
+</html>
